@@ -24,6 +24,8 @@ def begin(rx_pin=27, tx_pin=26):
 
 def play(index=None):
     if index:
+        if index < 0: index = 0
+        if index > 0xFFFF: index = 0xFFFF
         send(0x41, bytes([ index >> 8, index & 0xFF ])) # Play with index
     else:
         send(0x01) # Play
@@ -41,6 +43,8 @@ def stop():
     send(0x0E) # Stop play
 
 def setVolume(level=50):
+    if level > 100: level = 100
+    if level < 0: level = 0
     send(0x31, bytes([ int(level / 100 * 0x1E) ])) # Set volume
 
 def getStatus():
